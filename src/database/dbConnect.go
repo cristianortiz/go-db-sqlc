@@ -8,9 +8,8 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-func DBConnect() {
-	db, err := sql.Open("mysql", "root:invernalia2013@tcp(127.0.0.1:3306)/ambassador")
-	defer db.Close()
+func DBConnect() *sql.DB {
+	DB, err := sql.Open("mysql", "root:invernalia2013@tcp(127.0.0.1:3306)/ambassador")
 
 	if err != nil {
 		log.Fatal(err)
@@ -18,12 +17,14 @@ func DBConnect() {
 
 	var version string
 
-	err2 := db.QueryRow("SELECT VERSION()").Scan(&version)
+	err2 := DB.QueryRow("SELECT VERSION()").Scan(&version)
 
 	if err2 != nil {
 		log.Fatal(err2)
 	}
 
 	fmt.Println("DB is Running : " + version)
+	return DB
+	//defer DB.Close()
 
 }
