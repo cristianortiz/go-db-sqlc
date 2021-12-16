@@ -3,8 +3,9 @@ package main
 import (
 	"context"
 	"database/sql"
-	"fmt"
 	"go-db-sqlc/src/database"
+	"go-db-sqlc/src/database/users"
+	"log"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -12,10 +13,10 @@ import (
 func main() {
 	ctx := context.Background()
 	db := database.DBConnect()
-	queries := database.New(db)
+	queries := users.New(db)
 
 	// create an user
-	result, err := queries.CreateUser(ctx, database.CreateUserParams{
+	result, err := queries.CreateUser(ctx, users.CreateUserParams{
 		Firstname:    "Jon",
 		Lastname:     "Doe",
 		Email:        "jon@gmail.com",
@@ -24,15 +25,15 @@ func main() {
 	})
 	if err != nil {
 
-		fmt.Println(err.Error())
+		log.Println(err.Error())
 	}
 
 	insertedUserID, err := result.LastInsertId()
 	if err != nil {
-		fmt.Println(err.Error())
+		log.Println(err.Error())
 
 	}
-	fmt.Println(insertedUserID)
+	log.Println(insertedUserID)
 
 	app := fiber.New()
 	app.Get("/", func(c *fiber.Ctx) error {

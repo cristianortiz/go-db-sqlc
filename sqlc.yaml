@@ -1,7 +1,7 @@
 version: 1
 packages:
-  - path: "src/database"
-    name: "database"
+  - path: "src/database/users"
+    name: "users"
     engine: "mysql"
     schema: "schema.sql"
     queries: "query.sql"
