@@ -10,7 +10,7 @@ import (
 
 func DBConnect() *sql.DB {
 	DB, err := sql.Open("mysql", "root:invernalia2013@tcp(127.0.0.1:3306)/ambassador")
-
+	//defer DB.Close()
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -23,8 +23,7 @@ func DBConnect() *sql.DB {
 		log.Fatal(err2)
 	}
 
-	fmt.Println("DB is Running : " + version)
+	fmt.Println("DB is Running on air : " + version)
 	return DB
-	//defer DB.Close()
 
 }
