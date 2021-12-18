@@ -8,8 +8,11 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-func DBConnect() *sql.DB {
-	DB, err := sql.Open("mysql", "root:invernalia2013@tcp(127.0.0.1:3306)/ambassador")
+var DB *sql.DB
+
+func DBConnect() {
+	var err error
+	DB, err = sql.Open("mysql", "root:invernalia2013@tcp(127.0.0.1:3306)/ambassador")
 	//defer DB.Close()
 	if err != nil {
 		log.Fatal(err)
@@ -24,6 +27,6 @@ func DBConnect() *sql.DB {
 	}
 
 	fmt.Println("DB is Running on air : " + version)
-	return DB
+	//return DB
 
 }
