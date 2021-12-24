@@ -3,5 +3,5 @@ packages:
   - path: "src/database/users"
     name: "users"
     engine: "mysql"
-    schema: "schema.sql"
-    queries: "query.sql"
+    schema: "src/database/users/config/schema.sql"
+    queries: "src/database/users/config/query.sql"

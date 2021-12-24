@@ -2,6 +2,7 @@ package routes
 
 import (
 	"go-db-sqlc/src/controllers"
+	"go-db-sqlc/src/middlewares"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -14,5 +15,12 @@ func Setup(app *fiber.App) {
 	admin := api.Group("admin")
 	//this endpoint complete route is /api/admin/register
 	admin.Post("/register", controllers.Register)
+	admin.Post("/login", controllers.Login)
 
+	//middleware to check user credentiales with jwt
+	adminAuthenticated := admin.Use(middlewares.IsAuthenticated)
+	adminAuthenticated.Get("/get-user", controllers.GetUser)
+	adminAuthenticated.Post("/logout", controllers.Logout)
+	adminAuthenticated.Put("/update-user", controllers.UpdateUserInfo)
+	adminAuthenticated.Put("/update-password", controllers.UpdateUserPassword)
 }

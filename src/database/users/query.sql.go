@@ -79,6 +79,25 @@ func (q *Queries) GetAllUsers(ctx context.Context) ([]User, error) {
 	return items, nil
 }
 
+const getUserByEmail = `-- name: GetUserByEmail :one
+ SELECT id, firstname, lastname, email, upassword, isambassador FROM users
+ WHERE email = ? LIMIT 1
+`
+
+func (q *Queries) GetUserByEmail(ctx context.Context, email string) (User, error) {
+	row := q.db.QueryRowContext(ctx, getUserByEmail, email)
+	var i User
+	err := row.Scan(
+		&i.ID,
+		&i.Firstname,
+		&i.Lastname,
+		&i.Email,
+		&i.Upassword,
+		&i.Isambassador,
+	)
+	return i, err
+}
+
 const getUserByID = `-- name: GetUserByID :one
  SELECT id, firstname, lastname, email, upassword, isambassador FROM users
  WHERE id = ? LIMIT 1
@@ -96,4 +115,77 @@ func (q *Queries) GetUserByID(ctx context.Context, id int64) (User, error) {
 		&i.Isambassador,
 	)
 	return i, err
+}
+
+const getUserParamsByID = `-- name: GetUserParamsByID :one
+ SELECT id,firstname,lastname,email FROM users
+ WHERE id = ? LIMIT 1
+`
+
+type GetUserParamsByIDRow struct {
+	ID        int64
+	Firstname string
+	Lastname  string
+	Email     string
+}
+
+func (q *Queries) GetUserParamsByID(ctx context.Context, id int64) (GetUserParamsByIDRow, error) {
+	row := q.db.QueryRowContext(ctx, getUserParamsByID, id)
+	var i GetUserParamsByIDRow
+	err := row.Scan(
+		&i.ID,
+		&i.Firstname,
+		&i.Lastname,
+		&i.Email,
+	)
+	return i, err
+}
+
+const updateUserInfo = `-- name: UpdateUserInfo :execresult
+UPDATE users SET
+  firstname = ?,lastname= ?,email= ?
+WHERE id = ?
+`
+
+type UpdateUserInfoParams struct {
+	Firstname string
+	Lastname  string
+	Email     string
+	ID        int64
+}
+
+func (q *Queries) UpdateUserInfo(ctx context.Context, arg UpdateUserInfoParams) (sql.Result, error) {
+	return q.db.ExecContext(ctx, updateUserInfo,
+		arg.Firstname,
+		arg.Lastname,
+		arg.Email,
+		arg.ID,
+	)
+}
+
+const updateUserPassword = `-- name: UpdateUserPassword :execresult
+UPDATE users SET
+  upassword = ?
+WHERE id = ?
+`
+
+type UpdateUserPasswordParams struct {
+	Upassword string
+	ID        int64
+}
+
+func (q *Queries) UpdateUserPassword(ctx context.Context, arg UpdateUserPasswordParams) (sql.Result, error) {
+	return q.db.ExecContext(ctx, updateUserPassword, arg.Upassword, arg.ID)
+}
+
+const userEmailExists = `-- name: UserEmailExists :one
+ SELECT COUNT(*) FROM users
+ WHERE  email = ? LIMIT 1
+`
+
+func (q *Queries) UserEmailExists(ctx context.Context, email string) (int64, error) {
+	row := q.db.QueryRowContext(ctx, userEmailExists, email)
+	var count int64
+	err := row.Scan(&count)
+	return count, err
 }
