@@ -14,6 +14,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
+//controller function register endpoint to register a new user account
 func Register(c *fiber.Ctx) error {
 	//sqlc context and queries struct
 	ctx := context.Background()

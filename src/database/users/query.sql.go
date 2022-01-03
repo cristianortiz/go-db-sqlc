@@ -79,6 +79,48 @@ func (q *Queries) GetAllUsers(ctx context.Context) ([]User, error) {
 	return items, nil
 }
 
+const getAmbassadors = `-- name: GetAmbassadors :many
+ SELECT id,firstname,lastname,email,isambassador FROM users
+ WHERE isambassador = 1
+`
+
+type GetAmbassadorsRow struct {
+	ID           int64
+	Firstname    string
+	Lastname     string
+	Email        string
+	Isambassador sql.NullInt32
+}
+
+func (q *Queries) GetAmbassadors(ctx context.Context) ([]GetAmbassadorsRow, error) {
+	rows, err := q.db.QueryContext(ctx, getAmbassadors)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []GetAmbassadorsRow
+	for rows.Next() {
+		var i GetAmbassadorsRow
+		if err := rows.Scan(
+			&i.ID,
+			&i.Firstname,
+			&i.Lastname,
+			&i.Email,
+			&i.Isambassador,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const getUserByEmail = `-- name: GetUserByEmail :one
  SELECT id, firstname, lastname, email, upassword, isambassador FROM users
  WHERE email = ? LIMIT 1

@@ -5,3 +5,9 @@ packages:
     engine: "mysql"
     schema: "src/database/users/config/schema.sql"
     queries: "src/database/users/config/query.sql"
+
+  - path: "src/database/products"
+    name: "products"
+    engine: "mysql"
+    schema: "src/database/products/config/schema.sql"
+    queries: "src/database/products/config/query.sql"

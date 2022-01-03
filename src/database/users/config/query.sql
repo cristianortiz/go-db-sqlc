@@ -4,6 +4,10 @@
  -- name: GetUserParamsByID :one
  SELECT id,firstname,lastname,email FROM users
  WHERE id = ? LIMIT 1;
+
+ -- name: GetAmbassadors :many
+ SELECT id,firstname,lastname,email,isambassador FROM users
+ WHERE isambassador = 1 ;
  
  -- name: GetUserByEmail :one
  SELECT * FROM users
