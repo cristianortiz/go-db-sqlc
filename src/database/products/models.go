@@ -5,9 +5,10 @@ package products
 import ()
 
 type Product struct {
-	ID          int64
-	Title       string
-	Description string
-	Image       string
-	Price       float64
+	ID          int64   `json:"id"`
+	Category    string  `json:"category"`
+	Title       string  `json:"title"`
+	Description string  `json:"description"`
+	Image       string  `json:"image"`
+	Price       float64 `json:"price"`
 }

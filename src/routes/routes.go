@@ -30,8 +30,8 @@ func Setup(app *fiber.App) {
 	//products endpoints
 	adminAuthenticated.Get("/products", controllers.GetProducts)
 	adminAuthenticated.Post("/product", controllers.CreateProduct)
-	// adminAuthenticated.Get("/product/:id", controllers.GetProductByID)
-	// adminAuthenticated.Put("/product/:id", controllers.UpdateProduct)
-	// adminAuthenticated.Delete("/product/:id", controllers.DeleteProduct)
+	adminAuthenticated.Get("/product/:id", controllers.GetProductByID)
+	adminAuthenticated.Put("/product/:id", controllers.UpdateProduct)
+	adminAuthenticated.Delete("/product/:id", controllers.DeleteProduct)
 
 }

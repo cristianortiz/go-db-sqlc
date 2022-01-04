@@ -7,10 +7,10 @@ import (
 )
 
 type User struct {
-	ID           int64
-	Firstname    string
-	Lastname     string
-	Email        string
-	Upassword    string
-	Isambassador sql.NullInt32
+	ID           int64         `json:"id"`
+	Firstname    string        `json:"firstname"`
+	Lastname     string        `json:"lastname"`
+	Email        string        `json:"email"`
+	Upassword    string        `json:"upassword"`
+	Isambassador sql.NullInt32 `json:"isambassador"`
 }

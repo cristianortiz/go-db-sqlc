@@ -17,11 +17,11 @@ INSERT INTO users (
 `
 
 type CreateUserParams struct {
-	Firstname    string
-	Lastname     string
-	Email        string
-	Upassword    string
-	Isambassador sql.NullInt32
+	Firstname    string        `json:"firstname"`
+	Lastname     string        `json:"lastname"`
+	Email        string        `json:"email"`
+	Upassword    string        `json:"upassword"`
+	Isambassador sql.NullInt32 `json:"isambassador"`
 }
 
 func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (sql.Result, error) {
@@ -85,11 +85,11 @@ const getAmbassadors = `-- name: GetAmbassadors :many
 `
 
 type GetAmbassadorsRow struct {
-	ID           int64
-	Firstname    string
-	Lastname     string
-	Email        string
-	Isambassador sql.NullInt32
+	ID           int64         `json:"id"`
+	Firstname    string        `json:"firstname"`
+	Lastname     string        `json:"lastname"`
+	Email        string        `json:"email"`
+	Isambassador sql.NullInt32 `json:"isambassador"`
 }
 
 func (q *Queries) GetAmbassadors(ctx context.Context) ([]GetAmbassadorsRow, error) {
@@ -165,10 +165,10 @@ const getUserParamsByID = `-- name: GetUserParamsByID :one
 `
 
 type GetUserParamsByIDRow struct {
-	ID        int64
-	Firstname string
-	Lastname  string
-	Email     string
+	ID        int64  `json:"id"`
+	Firstname string `json:"firstname"`
+	Lastname  string `json:"lastname"`
+	Email     string `json:"email"`
 }
 
 func (q *Queries) GetUserParamsByID(ctx context.Context, id int64) (GetUserParamsByIDRow, error) {
@@ -190,10 +190,10 @@ WHERE id = ?
 `
 
 type UpdateUserInfoParams struct {
-	Firstname string
-	Lastname  string
-	Email     string
-	ID        int64
+	Firstname string `json:"firstname"`
+	Lastname  string `json:"lastname"`
+	Email     string `json:"email"`
+	ID        int64  `json:"id"`
 }
 
 func (q *Queries) UpdateUserInfo(ctx context.Context, arg UpdateUserInfoParams) (sql.Result, error) {
@@ -212,8 +212,8 @@ WHERE id = ?
 `
 
 type UpdateUserPasswordParams struct {
-	Upassword string
-	ID        int64
+	Upassword string `json:"upassword"`
+	ID        int64  `json:"id"`
 }
 
 func (q *Queries) UpdateUserPassword(ctx context.Context, arg UpdateUserPasswordParams) (sql.Result, error) {
