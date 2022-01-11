@@ -13,3 +13,24 @@ packages:
     schema: "src/database/products/config/schema.sql"
     queries: "src/database/products/config/query.sql"
     emit_json_tags: true
+
+  - path: "src/database/links"
+    name: "links"
+    engine: "mysql"
+    schema: "src/database/links/config/schema.sql"
+    queries: "src/database/links/config/query.sql"
+    emit_json_tags: true
+
+  - path: "src/database/orders"
+    name: "orders"
+    engine: "mysql"
+    schema: "src/database/orders/config/schema.sql"
+    queries: "src/database/orders/config/query.sql"
+    emit_json_tags: true
+
+  - path: "src/database/order_item"
+    name: "order_item"
+    engine: "mysql"
+    schema: "src/database/order_item/config/schema.sql"
+    queries: "src/database/order_item/config/query.sql"
+    emit_json_tags: true
