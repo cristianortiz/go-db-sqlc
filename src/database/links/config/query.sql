@@ -1,3 +1,3 @@
 -- name: GetAllLinks :many
  SELECT * FROM links
- ORDER BY id ASC;
+ LEFT JOIN users ON links.user_id=users.id;

@@ -11,5 +11,15 @@ CREATE TABLE orders (
   city TEXT NOT null,
   country TEXT NOT null,
   zip TEXT NOT null,
-  complete tinyint(1) NOT NULL DEFAULT 0);
-  
+  complete tinyint(1) NOT NULL DEFAULT 0,
+  CONSTRAINT fk_orders_users FOREIGN KEY (user_id) REFERENCES users (id) 
+  );
+
+  CREATE TABLE users (
+  id   BIGINT  NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  firstname text NOT Null,
+  lastname text NOT NULL,
+  email text NOT NULL UNIQUE,
+  upassword text NOT NULL,
+  isambassador TINYINT
+);

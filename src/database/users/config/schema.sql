@@ -5,7 +5,8 @@ CREATE TABLE users (
   email text NOT NULL UNIQUE,
   upassword text NOT NULL,
   isambassador TINYINT
+);
 
 
  
-);
+

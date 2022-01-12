@@ -47,3 +47,44 @@ func (q *Queries) GetAllOrders(ctx context.Context) ([]Order, error) {
 	}
 	return items, nil
 }
+
+const getOrdersByUsers = `-- name: GetOrdersByUsers :many
+SELECT CONCAT(users.firstname," ",users.lastname) as name, orders.id,user_id,complete
+FROM orders
+LEFT JOIN users ON orders.user_id=users.id
+`
+
+type GetOrdersByUsersRow struct {
+	Name     string `json:"name"`
+	ID       int64  `json:"id"`
+	UserID   int64  `json:"user_id"`
+	Complete bool   `json:"complete"`
+}
+
+func (q *Queries) GetOrdersByUsers(ctx context.Context) ([]GetOrdersByUsersRow, error) {
+	rows, err := q.db.QueryContext(ctx, getOrdersByUsers)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []GetOrdersByUsersRow
+	for rows.Next() {
+		var i GetOrdersByUsersRow
+		if err := rows.Scan(
+			&i.Name,
+			&i.ID,
+			&i.UserID,
+			&i.Complete,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}

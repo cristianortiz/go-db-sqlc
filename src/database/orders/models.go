@@ -2,7 +2,9 @@
 
 package orders
 
-import ()
+import (
+	"database/sql"
+)
 
 type Order struct {
 	ID              int64  `json:"id"`
@@ -18,4 +20,13 @@ type Order struct {
 	Country         string `json:"country"`
 	Zip             string `json:"zip"`
 	Complete        bool   `json:"complete"`
+}
+
+type User struct {
+	ID           int64         `json:"id"`
+	Firstname    string        `json:"firstname"`
+	Lastname     string        `json:"lastname"`
+	Email        string        `json:"email"`
+	Upassword    string        `json:"upassword"`
+	Isambassador sql.NullInt32 `json:"isambassador"`
 }

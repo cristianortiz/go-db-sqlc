@@ -5,23 +5,46 @@ package links
 
 import (
 	"context"
+	"database/sql"
 )
 
 const getAllLinks = `-- name: GetAllLinks :many
- SELECT id, code, user_id FROM links
- ORDER BY id ASC
+ SELECT links.id, code, user_id, users.id, firstname, lastname, email, upassword, isambassador FROM links
+ LEFT JOIN users ON links.user_id=users.id
 `
 
-func (q *Queries) GetAllLinks(ctx context.Context) ([]Link, error) {
+type GetAllLinksRow struct {
+	ID           int64          `json:"id"`
+	Code         string         `json:"code"`
+	UserID       int64          `json:"user_id"`
+	ID_2         sql.NullInt64  `json:"id_2"`
+	Firstname    sql.NullString `json:"firstname"`
+	Lastname     sql.NullString `json:"lastname"`
+	Email        sql.NullString `json:"email"`
+	Upassword    sql.NullString `json:"upassword"`
+	Isambassador sql.NullInt32  `json:"isambassador"`
+}
+
+func (q *Queries) GetAllLinks(ctx context.Context) ([]GetAllLinksRow, error) {
 	rows, err := q.db.QueryContext(ctx, getAllLinks)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	var items []Link
+	var items []GetAllLinksRow
 	for rows.Next() {
-		var i Link
-		if err := rows.Scan(&i.ID, &i.Code, &i.UserID); err != nil {
+		var i GetAllLinksRow
+		if err := rows.Scan(
+			&i.ID,
+			&i.Code,
+			&i.UserID,
+			&i.ID_2,
+			&i.Firstname,
+			&i.Lastname,
+			&i.Email,
+			&i.Upassword,
+			&i.Isambassador,
+		); err != nil {
 			return nil, err
 		}
 		items = append(items, i)
